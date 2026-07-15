@@ -73,7 +73,7 @@
   // ── Configuración ──────────────────────────────────────────────────────
   const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';   // <-- cambia por tu URL real
   const SUPABASE_ANON_KEY = 'TU_ANON_KEY';                    // <-- cambia por tu anon key real
-  const PASSWORD = 'hola';                       // <-- pon aquí la contraseña del panel
+  const PASSWORD = 'cambia-esta-clave';                       // <-- pon aquí la contraseña del panel
 
   let filtroActual = 'pendiente';
   const ESTADOS = ['pendiente', 'confirmada', 'reprogramada', 'cancelada', 'borrador'];
@@ -108,7 +108,7 @@
     else url += `&estado=neq.borrador`; // en "todas" no mostramos los a medias sin terminar
 
     const res = await fetch(url, {
-      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
+      headers: { apikey: SUPABASE_ANON_KEY }
     });
     const citas = await res.json();
     pintarTabla(citas);
@@ -156,7 +156,7 @@
     await fetch(`${SUPABASE_URL}/rest/v1/citas?id=eq.${id}`, {
       method: 'PATCH',
       headers: {
-        apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        apikey: SUPABASE_ANON_KEY,
         'Content-Type': 'application/json', Prefer: 'return=minimal'
       },
       body: JSON.stringify({ fecha, hora, estado: 'reprogramada', actualizado_en: new Date().toISOString() })
@@ -168,7 +168,7 @@
     await fetch(`${SUPABASE_URL}/rest/v1/citas?id=eq.${id}`, {
       method: 'PATCH',
       headers: {
-        apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        apikey: SUPABASE_ANON_KEY,
         'Content-Type': 'application/json', Prefer: 'return=minimal'
       },
       body: JSON.stringify({ estado, actualizado_en: new Date().toISOString() })

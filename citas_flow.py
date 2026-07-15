@@ -27,15 +27,28 @@ except ImportError:
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
 SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
+
+# Supabase tiene dos sistemas de claves: las nuevas (sb_secret_..., sb_publishable_...)
+# y las antiguas basadas en JWT (service_role/anon, que empiezan por "eyJ...").
+# Con las nuevas, la clave va SOLO en la cabecera "apikey"; si además se manda en
+# "Authorization: Bearer", Supabase la rechaza como "Invalid JWT". Con las antiguas,
+# hay que mandarla en ambas cabeceras. Detectamos cuál es por el prefijo.
+if SUPABASE_SERVICE_KEY.startswith("sb_"):
+    HEADERS = {
+        "apikey": SUPABASE_SERVICE_KEY,
+        "Content-Type": "application/json",
+    }
+else:
+    HEADERS = {
+        "apikey": SUPABASE_SERVICE_KEY,
+        "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
+        "Content-Type": "application/json",
+    }
+
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 NOTIFY_FROM = os.environ.get("CITAS_FROM_EMAIL", "citas@olivillatres.es")
 NOTIFY_TO = os.environ.get("CITAS_NOTIFY_EMAIL", "info@olivillatres.com")
 
-HEADERS = {
-    "apikey": SUPABASE_SERVICE_KEY,
-    "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
-    "Content-Type": "application/json",
-}
 
 # Orden en el que se piden los datos. El primer campo vacío de la lista
 # es "en qué paso está" la conversación en todo momento.
