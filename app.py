@@ -1,6 +1,11 @@
 """
 app.py - OliviBot Web (widget flotante para olivillatres.com)
 TF-IDF + SVM + intents.json. Sin retriever, ligero para Render free tier.
+#Clave resend re_YjsYz8jW_7wr64CHgAjYhm5AYPaeUDmzR
+"""
+"""
+app.py - OliviBot Web (widget flotante para olivillatres.com)
+TF-IDF + SVM + intents.json. Sin retriever, ligero para Render free tier.
 """
 
 import pickle
@@ -14,6 +19,7 @@ BASE = Path(__file__).parent
 sys.path.insert(0, str(BASE))
 
 from train import normalizar, predecir, entrenar
+from citas_flow import manejar_cita, iniciar_cita
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -46,13 +52,31 @@ respuestas = modelo_data['respuestas']
 
 # ── Lógica de respuesta ───────────────────────────────────────────────────────
 
-def obtener_respuesta(texto: str):
+def obtener_respuesta(texto: str, session_id: str = None):
+    # Si hay una cita a medias para esta sesión, el mensaje se trata como
+    # respuesta al siguiente dato pendiente (nombre/teléfono/fecha/hora/lugar),
+    # saltándose la clasificación normal de intents.
+    if session_id:
+        respuesta_cita = manejar_cita(session_id, texto)
+        if respuesta_cita is not None:
+            return {
+                "intent": "cita",
+                "nivel": "flujo_cita",
+                "confianza": 1.0,
+                "respuesta": respuesta_cita,
+            }
+
     texto_norm = normalizar(texto)
 
     # Nivel 1: coincidencia exacta
     for intent in intents_data["intents"]:
         patrones = [normalizar(p) for p in intent["patterns"]]
         if texto_norm in patrones:
+            if intent["tag"] == "cita" and session_id:
+                return {
+                    "intent": "cita", "nivel": "exacto", "confianza": 1.0,
+                    "respuesta": iniciar_cita(session_id),
+                }
             return {
                 "intent":    intent["tag"],
                 "nivel":     "exacto",
@@ -62,6 +86,12 @@ def obtener_respuesta(texto: str):
 
     # Nivel 2: SVM
     intent, confianza = predecir(pipeline, texto)
+
+    if intent == "cita" and session_id:
+        return {
+            "intent": "cita", "nivel": "svm", "confianza": round(confianza, 3),
+            "respuesta": iniciar_cita(session_id),
+        }
 
     if intent != 'desconocido' and intent in respuestas:
         return {
@@ -107,9 +137,10 @@ def home():
 def chat():
     data = request.get_json() or {}
     mensaje = data.get('mensaje', '')
+    session_id = data.get('session_id')
     if not mensaje:
         return jsonify({'respuesta': 'No he recibido ningún texto.'}), 400
-    return jsonify(obtener_respuesta(mensaje))
+    return jsonify(obtener_respuesta(mensaje, session_id))
 
 @app.route('/widget.js')
 def widget():
@@ -126,6 +157,9 @@ WIDGET_JS = """
 (function () {
   var currentScript = document.currentScript;
   var API_BASE = new URL(currentScript.src).origin;
+  var SESSION_ID = (window.crypto && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : 'ob-' + Date.now() + '-' + Math.random().toString(36).slice(2);
 
   var css = `
     .ob-btn { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px;
@@ -211,7 +245,7 @@ WIDGET_JS = """
     fetch(API_BASE + '/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mensaje: texto })
+      body: JSON.stringify({ mensaje: texto, session_id: SESSION_ID })
     })
       .then(function (r) { return r.json(); })
       .then(function (data) { addMsg(data.respuesta, 'bot'); })

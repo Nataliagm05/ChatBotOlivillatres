@@ -32,7 +32,7 @@
         "horario de atencion", "dias laborables"
       ],
       "responses": [
-        "Nuestro horario es de lunes a jueves de 9:00 a 14:00 y de 16:00 a 19:00.En verano, el horario es de 7:00 a 15:00. Los fines de semana cerramos."
+        "Nuestro horario es de lunes a jueves de 9:00 a 14:00 y de 16:00 a 19:00, y los viernes de 9:00 a 14:00."
       ]
     },
     {
@@ -147,6 +147,16 @@
       "responses": [
         "Algunos de nuestros proyectos están financiados por la Unión Europea a través del Plan de Recuperación, Transformación y Resiliencia. Consúltanos según tu proyecto si podría acogerse a algún tipo de ayuda."
       ]
+    },
+    {
+      "tag": "cita",
+      "patterns": [
+        "quiero pedir una cita", "quiero una cita", "necesito una visita", "quiero agendar una visita",
+        "podeis venir a valorar la obra", "quiero que vengais a ver mi casa", "necesito una visita tecnica",
+        "quiero concertar una cita", "como pido cita", "quiero programar una visita",
+        "podriais pasar a ver el problema", "quiero reservar una cita", "necesito que alguien venga a valorarlo"
+      ],
+      "responses": ["¡Perfecto! Para agendar la visita, ¿cuál es tu nombre?"]
     },
     {
       "tag": "redes_sociales",
