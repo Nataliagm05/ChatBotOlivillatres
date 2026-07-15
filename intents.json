@@ -1,0 +1,159 @@
+{
+  "intents": [
+    {
+      "tag": "saludo",
+      "patterns": ["hola", "buenas", "buenos dias", "buenas tardes", "que tal", "hey", "hola buenas"],
+      "responses": ["¡Hola! Soy el asistente virtual de Olivilla Tres. ¿En qué puedo ayudarte? Puedo darte información sobre construcción, reformas, rehabilitación o presupuestos."]
+    },
+    {
+      "tag": "despedida",
+      "patterns": ["adios", "hasta luego", "nos vemos", "gracias adios", "chao", "bye"],
+      "responses": ["¡Hasta pronto! Si necesitas cualquier cosa, aquí estaré. También puedes llamarnos al 925 23 34 54."]
+    },
+    {
+      "tag": "agradecimiento",
+      "patterns": ["gracias", "muchas gracias", "genial gracias", "perfecto gracias", "vale gracias"],
+      "responses": ["¡De nada! ¿Puedo ayudarte con algo más?"]
+    },
+    {
+      "tag": "quienes_somos",
+      "patterns": [
+        "quienes sois", "que es olivilla tres", "cuentame sobre la empresa", "informacion de la empresa",
+        "desde cuando existis", "cuanta experiencia teneis", "sois una empresa de confianza"
+      ],
+      "responses": [
+        "Olivilla Tres lleva más de 10 años en el sector de la construcción, especializados en obra nueva, reformas y rehabilitación de viviendas y edificios en Toledo y alrededores. Tenemos alrededor de 200 proyectos realizados."
+      ]
+    },
+    {
+      "tag": "horario",
+      "patterns": [
+        "horario", "que horario teneis", "a que hora abrís", "cuando estais abiertos",
+        "horario de atencion", "dias laborables"
+      ],
+      "responses": [
+        "Nuestro horario es de lunes a jueves de 9:00 a 14:00 y de 16:00 a 19:00, y los viernes de 9:00 a 14:00."
+      ]
+    },
+    {
+      "tag": "contacto_telefono",
+      "patterns": [
+        "telefono", "cual es vuestro telefono", "numero de telefono", "como os llamo", "quiero llamar"
+      ],
+      "responses": ["Puedes llamarnos al 925 23 34 54."]
+    },
+    {
+      "tag": "contacto_email",
+      "patterns": [
+        "email", "correo electronico", "cual es vuestro correo", "quiero escribiros un email"
+      ],
+      "responses": ["Puedes escribirnos a info@olivillatres.com."]
+    },
+    {
+      "tag": "direccion",
+      "patterns": [
+        "direccion", "donde estais", "donde os encontrais", "cual es vuestra ubicacion", "donde teneis las oficinas"
+      ],
+      "responses": ["Estamos en Calle Río Valdecelada 7, Polígono Industrial, Toledo."]
+    },
+    {
+      "tag": "zona_trabajo",
+      "patterns": [
+        "en que zonas trabajais", "trabajais fuera de toledo", "haceis reformas en otras provincias",
+        "zona de trabajo", "donde haceis obras"
+      ],
+      "responses": ["Trabajamos principalmente en Toledo capital y alrededores. Cuéntanos dónde está tu proyecto y te confirmamos si podemos cubrir la zona."]
+    },
+    {
+      "tag": "presupuesto",
+      "patterns": [
+        "quiero un presupuesto", "como pido presupuesto", "cuanto cuesta una reforma", "necesito un presupuesto",
+        "solicitar presupuesto", "precio de una obra", "cuanto me costaria reformar mi casa",
+        "cuanto cuesta reformar la cocina", "cuanto cuesta reformar el baño", "queria saber el precio",
+        "hacen presupuestos gratis", "me pueden pasar un precio", "cuanto me saldria la reforma",
+        "necesito saber cuanto cuesta", "podeis darme un precio aproximado"
+      ],
+      "responses": [
+        "Puedes solicitar un presupuesto sin compromiso desde nuestra web en la sección 'Solicitar Presupuesto', o llamándonos al 925 23 34 54. Cuéntanos el tipo de proyecto y te atendemos personalmente."
+      ]
+    },
+    {
+      "tag": "area_construccion",
+      "patterns": [
+        "haceis obra nueva", "construccion desde cero", "construis viviendas", "area de construccion",
+        "podeis construir un edificio"
+      ],
+      "responses": [
+        "Sí, diseñamos y construimos desde cero proyectos personalizados de obra nueva, combinando funcionalidad, innovación y materiales de calidad."
+      ]
+    },
+    {
+      "tag": "area_reformas",
+      "patterns": [
+        "haceis reformas", "reformas integrales", "reformar mi casa", "reformar oficina", "reformar local",
+        "area de reformas"
+      ],
+      "responses": [
+        "Realizamos reformas integrales de viviendas, oficinas y locales, adaptándolas a tus necesidades con soluciones modernas y acabados de calidad."
+      ]
+    },
+    {
+      "tag": "cubiertas",
+      "patterns": [
+        "reparais cubiertas", "tejado con goteras", "arreglar tejado", "mantenimiento de cubiertas", "reparacion de tejados"
+      ],
+      "responses": [
+        "Reparamos y damos mantenimiento a cubiertas para garantizar protección y durabilidad frente al clima. Cuéntanos qué problema tienes y te asesoramos."
+      ]
+    },
+    {
+      "tag": "impermeabilizacion",
+      "patterns": [
+        "tengo goteras", "humedad en la pared", "filtraciones de agua", "impermeabilizar terraza",
+        "impermeabilizacion", "humedades en casa", "tengo goteras en la terraza", "se me moja el techo",
+        "entra agua por el tejado cuando llueve", "hay manchas de humedad en el techo",
+        "se filtra agua en el salon", "tengo un problema de filtraciones"
+      ],
+      "responses": [
+        "Ofrecemos soluciones de impermeabilización para proteger tus espacios de filtraciones y humedad, con productos de alta calidad y resultados duraderos."
+      ]
+    },
+    {
+      "tag": "rehabilitacion",
+      "patterns": [
+        "rehabilitacion de edificios", "rehabilitar fachada", "recuperar edificio antiguo",
+        "rehabilitacion de patios", "restaurar fachada"
+      ],
+      "responses": [
+        "Recuperamos y modernizamos edificios antiguos, patios y fachadas deteriorados, respetando su esencia original y asegurando su durabilidad."
+      ]
+    },
+    {
+      "tag": "proyectos_realizados",
+      "patterns": [
+        "que proyectos habeis hecho", "ejemplos de trabajos", "portfolio", "obras realizadas",
+        "puedo ver proyectos anteriores"
+      ],
+      "responses": [
+        "Tenemos alrededor de 200 proyectos realizados: viviendas unifamiliares, guarderías, colegios, edificios públicos y rehabilitaciones. Puedes verlos en la sección 'Proyectos Realizados' de la web."
+      ]
+    },
+    {
+      "tag": "financiacion",
+      "patterns": [
+        "hay ayudas para reformar", "subvenciones para rehabilitacion", "financiacion europea",
+        "fondos europeos para reformas", "ayudas del gobierno"
+      ],
+      "responses": [
+        "Algunos de nuestros proyectos están financiados por la Unión Europea a través del Plan de Recuperación, Transformación y Resiliencia. Consúltanos según tu proyecto si podría acogerse a algún tipo de ayuda."
+      ]
+    },
+    {
+      "tag": "redes_sociales",
+      "patterns": [
+        "teneis facebook", "redes sociales", "donde os puedo seguir", "instagram"
+      ],
+      "responses": ["Puedes seguirnos en nuestra página de Facebook para ver novedades y proyectos."]
+    }
+  ]
+}
