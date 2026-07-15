@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Citas — Olivilla Tres</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #f4f2f8; color: #322847; padding: 24px; }
+  .lock-screen { max-width: 360px; margin: 100px auto; background: #fff; padding: 32px;
+    border-radius: 16px; box-shadow: 0 4px 24px rgba(74,59,104,.15); text-align: center; }
+  .lock-screen h2 { color: #4a3b68; margin-bottom: 16px; }
+  .lock-screen input { width: 100%; padding: 10px 14px; border: 1.5px solid rgba(74,59,104,.2);
+    border-radius: 10px; margin-bottom: 12px; font-size: 14px; }
+  .lock-screen button, .btn { background: #b53987; color: #fff; border: none; padding: 10px 18px;
+    border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 500; }
+  .lock-screen button:hover, .btn:hover { background: #922f6d; }
+  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  header h1 { color: #4a3b68; font-size: 22px; }
+  .filtros { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filtro-chip { background: #fff; border: 1.5px solid rgba(74,59,104,.2); color: #4a3b68;
+    padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; }
+  .filtro-chip.activo { background: #4a3b68; color: #fff; border-color: #4a3b68; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px;
+    overflow: hidden; box-shadow: 0 2px 12px rgba(74,59,104,.08); }
+  th, td { padding: 10px 12px; text-align: left; font-size: 13px; border-bottom: 1px solid rgba(74,59,104,.08); }
+  th { background: #4a3b68; color: #fff; font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  .estado { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
+  .estado.pendiente { background: #fdf1e0; color: #a56a1a; }
+  .estado.confirmada { background: #e3f5e8; color: #1f7a3d; }
+  .estado.reprogramada { background: #e5eefc; color: #1c5ba0; }
+  .estado.cancelada { background: #fbe6e6; color: #b3261e; }
+  .estado.borrador { background: #eee; color: #777; }
+  .acciones { display: flex; gap: 6px; flex-wrap: wrap; }
+  .acciones button { font-size: 11px; padding: 5px 10px; border-radius: 8px; border: none; cursor: pointer; }
+  .btn-confirmar { background: #1f7a3d; color: #fff; }
+  .btn-reprogramar { background: #1c5ba0; color: #fff; }
+  .btn-cancelar { background: #b3261e; color: #fff; }
+  .vacio { text-align: center; padding: 40px; color: #999; }
+  .reprog-form { display: none; gap: 6px; margin-top: 6px; }
+  .reprog-form.abierto { display: flex; }
+  .reprog-form input { padding: 4px 8px; border: 1px solid rgba(74,59,104,.2); border-radius: 6px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div id="lock" class="lock-screen">
+  <h2>Panel de Citas</h2>
+  <input type="password" id="password" placeholder="Contraseña">
+  <button onclick="comprobarPassword()">Entrar</button>
+</div>
+
+<div id="panel" style="display:none">
+  <header>
+    <h1>📅 Citas solicitadas</h1>
+    <button class="btn" onclick="cargarCitas()">↻ Actualizar</button>
+  </header>
+  <div class="filtros" id="filtros"></div>
+  <table>
+    <thead>
+      <tr>
+        <th>Estado</th><th>Nombre</th><th>Teléfono</th><th>Día pedido</th><th>Hora pedida</th>
+        <th>Lugar</th><th>Solicitado</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tabla-citas"></tbody>
+  </table>
+  <div id="vacio" class="vacio" style="display:none">No hay citas con este filtro.</div>
+</div>
+
+<script>
+  // ── Configuración ──────────────────────────────────────────────────────
+  const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';   // <-- cambia por tu URL real
+  const SUPABASE_ANON_KEY = 'TU_ANON_KEY';                    // <-- cambia por tu anon key real
+  const PASSWORD = 'cambia-esta-clave';                       // <-- pon aquí la contraseña del panel
+
+  let filtroActual = 'pendiente';
+  const ESTADOS = ['pendiente', 'confirmada', 'reprogramada', 'cancelada', 'borrador'];
+
+  function comprobarPassword() {
+    const val = document.getElementById('password').value;
+    if (val === PASSWORD) {
+      document.getElementById('lock').style.display = 'none';
+      document.getElementById('panel').style.display = 'block';
+      pintarFiltros();
+      cargarCitas();
+    } else {
+      alert('Contraseña incorrecta');
+    }
+  }
+
+  function pintarFiltros() {
+    const cont = document.getElementById('filtros');
+    cont.innerHTML = '';
+    ['todas', ...ESTADOS].forEach(estado => {
+      const chip = document.createElement('span');
+      chip.className = 'filtro-chip' + (estado === filtroActual ? ' activo' : '');
+      chip.textContent = estado === 'todas' ? 'Todas' : estado[0].toUpperCase() + estado.slice(1);
+      chip.onclick = () => { filtroActual = estado; pintarFiltros(); cargarCitas(); };
+      cont.appendChild(chip);
+    });
+  }
+
+  async function cargarCitas() {
+    let url = `${SUPABASE_URL}/rest/v1/citas?select=*&order=creado_en.desc`;
+    if (filtroActual !== 'todas') url += `&estado=eq.${filtroActual}`;
+    else url += `&estado=neq.borrador`; // en "todas" no mostramos los a medias sin terminar
+
+    const res = await fetch(url, {
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const citas = await res.json();
+    pintarTabla(citas);
+  }
+
+  function pintarTabla(citas) {
+    const tbody = document.getElementById('tabla-citas');
+    const vacio = document.getElementById('vacio');
+    tbody.innerHTML = '';
+    vacio.style.display = citas.length ? 'none' : 'block';
+
+    citas.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><span class="estado ${c.estado}">${c.estado}</span></td>
+        <td>${c.nombre || '-'}</td>
+        <td>${c.telefono || '-'}</td>
+        <td>${c.fecha_texto || '-'}${c.fecha ? ` <small>(${c.fecha})</small>` : ''}</td>
+        <td>${c.hora_texto || '-'}${c.hora ? ` <small>(${c.hora})</small>` : ''}</td>
+        <td>${c.lugar || '-'}</td>
+        <td>${new Date(c.creado_en).toLocaleString('es-ES')}</td>
+        <td>
+          <div class="acciones">
+            <button class="btn-confirmar" onclick="actualizarEstado('${c.id}','confirmada')">Confirmar</button>
+            <button class="btn-reprogramar" onclick="mostrarReprogramar('${c.id}')">Reprogramar</button>
+            <button class="btn-cancelar" onclick="actualizarEstado('${c.id}','cancelada')">Cancelar</button>
+          </div>
+          <div class="reprog-form" id="reprog-${c.id}">
+            <input type="date" id="fecha-${c.id}" value="${c.fecha || ''}">
+            <input type="time" id="hora-${c.id}" value="${c.hora || ''}">
+            <button class="btn-reprogramar" onclick="confirmarReprogramar('${c.id}')">Guardar</button>
+          </div>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function mostrarReprogramar(id) {
+    document.getElementById(`reprog-${id}`).classList.toggle('abierto');
+  }
+
+  async function confirmarReprogramar(id) {
+    const fecha = document.getElementById(`fecha-${id}`).value;
+    const hora = document.getElementById(`hora-${id}`).value;
+    await fetch(`${SUPABASE_URL}/rest/v1/citas?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {
+        apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json', Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ fecha, hora, estado: 'reprogramada', actualizado_en: new Date().toISOString() })
+    });
+    cargarCitas();
+  }
+
+  async function actualizarEstado(id, estado) {
+    await fetch(`${SUPABASE_URL}/rest/v1/citas?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {
+        apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json', Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ estado, actualizado_en: new Date().toISOString() })
+    });
+    cargarCitas();
+  }
+</script>
+</body>
+</html>
