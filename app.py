@@ -1,7 +1,6 @@
 """
 app.py - OliviBot Web (widget flotante para olivillatres.com)
 TF-IDF + SVM + intents.json. Sin retriever, ligero para Render free tier.
-#Clave resend re_YjsYz8jW_7wr64CHgAjYhm5AYPaeUDmzR
 """
 """
 app.py - OliviBot Web (widget flotante para olivillatres.com)
