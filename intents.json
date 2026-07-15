@@ -32,7 +32,7 @@
         "horario de atencion", "dias laborables"
       ],
       "responses": [
-        "Nuestro horario es de lunes a jueves de 9:00 a 14:00 y de 16:00 a 19:00, y los viernes de 9:00 a 14:00."
+        "Nuestro horario es de lunes a jueves de 9:00 a 14:00 y de 16:00 a 19:00.En verano, el horario es de 7:00 a 15:00. Los fines de semana cerramos."
       ]
     },
     {
