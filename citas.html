@@ -229,6 +229,7 @@
                     <th>Estado</th>
                     <th>Nombre</th>
                     <th>Teléfono</th>
+                    <th>Email</th>
                     <th>Día pedido</th>
                     <th>Hora pedida</th>
                     <th>Lugar</th>
@@ -298,6 +299,7 @@
         <td><span class="estado ${c.estado}">${c.estado}</span></td>
         <td>${c.nombre || '-'}</td>
         <td>${c.telefono || '-'}</td>
+        <td>${c.email || '-'}</td>
         <td>${c.fecha_texto || '-'}${c.fecha ? ` <small>(${c.fecha})</small>` : ''}</td>
         <td>${c.hora_texto || '-'}${c.hora ? ` <small>(${c.hora})</small>` : ''}</td>
         <td>${c.lugar || '-'}</td>
