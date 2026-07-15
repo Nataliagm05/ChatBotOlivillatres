@@ -52,11 +52,12 @@ NOTIFY_TO = os.environ.get("CITAS_NOTIFY_EMAIL", "info@olivillatres.com")
 
 # Orden en el que se piden los datos. El primer campo vacío de la lista
 # es "en qué paso está" la conversación en todo momento.
-CAMPOS_ORDEN = ["nombre", "telefono", "fecha_texto", "hora_texto", "lugar"]
+CAMPOS_ORDEN = ["nombre", "telefono", "email", "fecha_texto", "hora_texto", "lugar"]
 
 PREGUNTAS = {
     "nombre":      "¡Perfecto! Para agendar la visita, ¿cuál es tu nombre?",
     "telefono":    "Gracias{coma_nombre}. ¿Qué teléfono de contacto nos dejas?",
+    "email":       "¿Y tu email? Así podemos avisarte si hay algún cambio en la cita.",
     "fecha_texto": '¿Qué día te vendría bien? (por ejemplo: "el viernes" o "20 de julio")',
     "hora_texto":  "¿A qué hora te viene mejor?",
     "lugar":       "Por último, ¿en qué dirección o localidad sería la visita?",
@@ -145,6 +146,7 @@ def _notificar_empresa(cita):
                     "<p>Nueva solicitud de cita desde el chatbot de la web:</p><ul>"
                     f"<li><b>Nombre:</b> {cita.get('nombre', '-')}</li>"
                     f"<li><b>Teléfono:</b> {cita.get('telefono', '-')}</li>"
+                    f"<li><b>Email:</b> {cita.get('email', '-')}</li>"
                     f"<li><b>Día solicitado:</b> {cita.get('fecha_texto', '-')} "
                     f"(interpretado: {cita.get('fecha') or 'revisar en el panel'})</li>"
                     f"<li><b>Hora solicitada:</b> {cita.get('hora_texto', '-')} "
