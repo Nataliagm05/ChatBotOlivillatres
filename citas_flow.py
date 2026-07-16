@@ -206,7 +206,7 @@ def manejar_cita(session_id: str, mensaje: str):
     return (
         f"¡Listo, {cita.get('nombre')}! He apuntado tu solicitud de visita para "
         f"{cita.get('fecha_texto')} a las {cita.get('hora_texto')} en {cita.get('lugar')}. "
-        "En breve te confirmamos por teléfono. Si necesitas cambiar algo mientras tanto, "
+        "En breve uno de nuestros representantes revisará la cita y confirmará o reprogramará esta y le llegará un correo con la confirmación o reprogramación. Si necesitas cambiar algo mientras tanto, "
         "llámanos al 925 23 34 54."
     )
 

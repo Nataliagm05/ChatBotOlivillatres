@@ -234,6 +234,7 @@
                     <th>Hora pedida</th>
                     <th>Lugar</th>
                     <th>Solicitado</th>
+                    <th>Respuesta cliente</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -304,6 +305,11 @@
         <td>${c.hora_texto || '-'}${c.hora ? ` <small>(${c.hora})</small>` : ''}</td>
         <td>${c.lugar || '-'}</td>
         <td>${new Date(c.creado_en).toLocaleString('es-ES')}</td>
+        <td>
+            ${c.respuesta_cliente === 'confirmado' ? '✅ Confirmada' :
+                        c.respuesta_cliente === 'propuesta' ? `🔄 Propone: ${c.fecha_propuesta} ${c.hora_propuesta}` :
+                            '—'}
+        </td>
         <td>
           <div class="acciones">
             <button class="btn-confirmar" onclick="actualizarEstado('${c.id}','confirmada')">Confirmar</button>
