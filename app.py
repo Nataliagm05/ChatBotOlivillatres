@@ -161,7 +161,7 @@ WIDGET_JS = """
     : 'ob-' + Date.now() + '-' + Math.random().toString(36).slice(2);
 
   var css = `
-    .ob-btn { position: fixed; bottom: 150px; right: 24px; width: 56px; height: 56px;
+    .ob-btn { position: fixed; bottom: 130px; right: 24px; width: 56px; height: 56px;
       border-radius: 50%; background: #b53987; box-shadow: 0 4px 16px rgba(74,59,104,0.35);
       display: flex; align-items: center; justify-content: center; cursor: pointer;
       z-index: 2147483000; font-size: 26px; border: none; transition: transform .15s ease; }
