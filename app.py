@@ -164,12 +164,12 @@ WIDGET_JS = """
     .ob-btn { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px;
       border-radius: 50%; background: #b53987; box-shadow: 0 4px 16px rgba(74,59,104,0.35);
       display: flex; align-items: center; justify-content: center; cursor: pointer;
-      z-index: 999999; font-size: 26px; border: none; transition: transform .15s ease; }
+      z-index: 2147483000; font-size: 26px; border: none; transition: transform .15s ease; }
     .ob-btn:hover { transform: scale(1.06); }
     .ob-window { position: fixed; bottom: 92px; right: 24px; width: 340px; max-width: 90vw;
       height: 480px; max-height: 70vh; background: #fff; border-radius: 16px;
       box-shadow: 0 8px 32px rgba(74,59,104,0.25); display: none; flex-direction: column;
-      overflow: hidden; z-index: 999999; font-family: 'Inter', system-ui, sans-serif; }
+      overflow: hidden; z-index: 2147483000; font-family: 'Inter', system-ui, sans-serif; }
     .ob-window.open { display: flex; }
     .ob-header { background: #4a3b68; color: #fff; padding: 14px 16px; display: flex;
       align-items: center; gap: 10px; border-bottom: 3px solid #b53987; }
